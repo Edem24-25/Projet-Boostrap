@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin - Cahier de Présence Numérique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .sidebar {
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .sidebar-item {
+            padding: 12px 20px;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+            text-decoration: none;
+            display: block;
+        }
+
+        .sidebar-item:hover, .sidebar-item.active {
+            background: #f0f4f8;
+            border-left-color: #16a34a;
+            color: #16a34a;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0d4a8c;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(22, 163, 74, 0.3);
+            color: white;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, #0d4a8c 0%, #16a34a 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 15px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .action-btn:hover {
+            background: #f0f4f8;
+            border-color: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        .action-btn i {
+            font-size: 2rem;
+            color: #16a34a;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-clipboard-check"></i> Cahier de Présence
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-user"></i> Mon Profil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar">
+                <a href="#dashboard" class="sidebar-item active">
+                    <i class="fas fa-tachometer-alt"></i> Tableau de Bord
+                </a>
+                <a href="Gestion-Etudiants.html" class="sidebar-item">
+                    <i class="fas fa-users"></i> Gestion Étudiants
+                </a>
+                <a href="Gestion-Classes.html" class="sidebar-item">
+                    <i class="fas fa-folder"></i> Gestion Classes
+                </a>
+                <a href="Gestion-Presences.html" class="sidebar-item">
+                    <i class="fas fa-check-square"></i> Gestion Présences
+                </a>
+                <a href="Historique.html" class="sidebar-item">
+                    <i class="fas fa-history"></i> Historique
+                </a>
+                <a href="Profil.html" class="sidebar-item">
+                    <i class="fas fa-user-circle"></i> Mon Profil
+                </a>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <div class="welcome-section">
+                    <h2>Bienvenue, <span id="username">Administrateur</span>!</h2>
+                    <p>Vous avez un aperçu complet du système. Gérez les présences, les étudiants et les classes facilement.</p>
+
+                    <div class="quick-actions">
+                        <a href="Gestion-Etudiants.html" class="action-btn">
+                            <i class="fas fa-user-plus"></i>
+                            <div>Ajouter Étudiant</div>
+                        </a>
+                        <a href="Gestion-Classes.html" class="action-btn">
+                            <i class="fas fa-folder-plus"></i>
+                            <div>Créer Classe</div>
+                        </a>
+                        <a href="Gestion-Presences.html" class="action-btn">
+                            <i class="fas fa-clipboard-list"></i>
+                            <div>Marquer Présences</div>
+                        </a>
+                        <a href="Historique.html" class="action-btn">
+                            <i class="fas fa-chart-bar"></i>
+                            <div>Voir Statistiques</div>
+                        </a>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px;">📊 Résumé du Système</h3>
+
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-number">156</div>
+                            <div class="stat-label">Total Étudiants</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Nombre de Classes</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-number">143</div>
+                            <div class="stat-label">Présents du jour</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-number">8.3%</div>
+                            <div class="stat-label">Taux d'Absence</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    <h5>Activités Récentes</h5>
+                    <div style="margin-top: 15px;">
+                        <p><i class="fas fa-check-circle" style="color: #16a34a;"></i> Présences marquées pour la classe 3A - il y a 2 heures</p>
+                        <p><i class="fas fa-user-plus" style="color: #0d4a8c;"></i> Nouvel étudiant ajouté: Marie Dupont - il y a 5 heures</p>
+                        <p><i class="fas fa-folder-plus" style="color: #16a34a;"></i> Nouvelle classe créée: 4B - il y a 1 jour</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Placeholder pour logique futur
+        console.log('Dashboard Admin chargé');
+    </script>
+
+</body>
+</html>

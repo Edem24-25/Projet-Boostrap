@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Classes - Cahier de Présence Numérique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #0d4a8c 0%, #16a34a 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .btn-add {
+            background: white;
+            color: #0d4a8c;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            border-left: 5px solid #16a34a;
+        }
+
+        .class-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .class-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0d3b66;
+        }
+
+        .class-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-item {
+            text-align: center;
+            padding: 10px;
+            background: #f0f4f8;
+            border-radius: 8px;
+        }
+
+        .info-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #16a34a;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .class-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-edit {
+            background: #cfe2ff;
+            color: #0d4a8c;
+        }
+
+        .btn-edit:hover {
+            background: #0d4a8c;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-delete:hover {
+            background: #721c24;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-clipboard-check"></i> Cahier de Présence
+            </a>
+            <div class="ms-auto">
+                <a href="Profil.html" class="nav-link"><i class="fas fa-user"></i> Mon Profil</a>
+                <a href="index.html" class="nav-link"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="padding: 30px;">
+        <div class="page-header">
+            <h2><i class="fas fa-folder"></i> Gestion des Classes</h2>
+            <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addClassModal">
+                <i class="fas fa-folder-plus"></i> Créer une Classe
+            </button>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-name">Classe 3A</div>
+                        <span style="background: #d4edda; color: #155724; padding: 5px 10px; border-radius: 5px; font-weight: 600; font-size: 0.85rem;">Active</span>
+                    </div>
+                    <div class="class-info">
+                        <div class="info-item">
+                            <div class="info-number">28</div>
+                            <div class="info-label">Étudiants</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-number">26</div>
+                            <div class="info-label">Présents</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-number">2</div>
+                            <div class="info-label">Absents</div>
+                        </div>
+                    </div>
+                    <div class="class-actions">
+                        <button class="btn-action btn-edit"><i class="fas fa-edit"></i> Modifier</button>
+                        <button class="btn-action btn-delete"><i class="fas fa-trash"></i> Supprimer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="class-card" style="border-left-color: #0d4a8c;">
+                    <div class="class-header">
+                        <div class="class-name">Classe 3B</div>
+                        <span style="background: #d4edda; color: #155724; padding: 5px 10px; border-radius: 5px; font-weight: 600; font-size: 0.85rem;">Active</span>
+                    </div>
+                    <div class="class-info">
+                        <div class="info-item">
+                            <div class="info-number">25</div>
+                            <div class="info-label">Étudiants</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-number">24</div>
+                            <div class="info-label">Présents</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-number">1</div>
+                            <div class="info-label">Absents</div>
+                        </div>
+                    </div>
+                    <div class="class-actions">
+                        <button class="btn-action btn-edit"><i class="fas fa-edit"></i> Modifier</button>
+                        <button class="btn-action btn-delete"><i class="fas fa-trash"></i> Supprimer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="class-card">
+                    <div class="class-header">
+                        <div class="class-name">Classe 4A</div>
+                        <span style="background: #d4edda; color: #155724; padding: 5px 10px; border-radius: 5px; font-weight: 600; font-size: 0.85rem;">Active</span>
+                    </div>
+                    <div class="class-info">
+                        <div class="info-item">
+                            <div class="info-number">30</div>
+                            <div class="info-label">Étudiants</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-number">28</div>
+                            <div class="info-label">Présents</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-number">2</div>
+                            <div class="info-label">Absents</div>
+                        </div>
+                    </div>
+                    <div class="class-actions">
+                        <button class="btn-action btn-edit"><i class="fas fa-edit"></i> Modifier</button>
+                        <button class="btn-action btn-delete"><i class="fas fa-trash"></i> Supprimer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="class-card" style="border-left-color: #0d4a8c;">
+                    <div class="class-header">
+                        <div class="class-name">Classe 4B</div>
+                        <span style="background: #d4edda; color: #155724; padding: 5px 10px; border-radius: 5px; font-weight: 600; font-size: 0.85rem;">Active</span>
+                    </div>
+                    <div class="class-info">
+                        <div class="info-item">
+                            <div class="info-number">27</div>
+                            <div class="info-label">Étudiants</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-number">25</div>
+                            <div class="info-label">Présents</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-number">2</div>
+                            <div class="info-label">Absents</div>
+                        </div>
+                    </div>
+                    <div class="class-actions">
+                        <button class="btn-action btn-edit"><i class="fas fa-edit"></i> Modifier</button>
+                        <button class="btn-action btn-delete"><i class="fas fa-trash"></i> Supprimer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Créer Classe -->
+    <div class="modal fade" id="addClassModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, #0d4a8c 0%, #16a34a 100%); color: white;">
+                    <h5 class="modal-title"><i class="fas fa-folder-plus"></i> Créer une Classe</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Nom de la Classe</label>
+                            <input type="text" class="form-control" placeholder="Ex: 3A, 4B...">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" placeholder="Décrivez la classe..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn" style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: white;">Créer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

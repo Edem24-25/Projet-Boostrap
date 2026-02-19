@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Historique des Présences - Cahier de Présence Numérique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #0d4a8c 0%, #16a34a 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .btn-export {
+            background: white;
+            color: #0d4a8c;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .filter-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 15px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 0.2rem rgba(22, 163, 74, 0.15);
+            outline: none;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        table {
+            margin: 0;
+        }
+
+        thead {
+            background: #f0f4f8;
+        }
+
+        th {
+            padding: 15px;
+            font-weight: 600;
+            color: #0d3b66;
+            border: none;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        .badge-present {
+            background: #d4edda;
+            color: #155724;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .badge-absent {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-clipboard-check"></i> Cahier de Présence
+            </a>
+            <div class="ms-auto">
+                <a href="Profil.html" class="nav-link"><i class="fas fa-user"></i> Mon Profil</a>
+                <a href="index.html" class="nav-link"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="padding: 30px;">
+        <div class="page-header">
+            <h2><i class="fas fa-history"></i> Historique des Présences</h2>
+            <button class="btn-export" onclick="exportPDF()">
+                <i class="fas fa-file-pdf"></i> Exporter en PDF
+            </button>
+        </div>
+
+        <div class="filter-section">
+            <h5 class="mb-4">🔍 Filtres</h5>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label">Par Date</label>
+                    <input type="date" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Par Classe</label>
+                    <select class="form-select">
+                        <option>-- Toutes les classes --</option>
+                        <option>Classe 3A</option>
+                        <option>Classe 3B</option>
+                        <option>Classe 4A</option>
+                        <option>Classe 4B</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Par Étudiant</label>
+                    <input type="text" class="form-control" placeholder="Rechercher...">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Par Statut</label>
+                    <select class="form-select">
+                        <option>-- Tous les statuts --</option>
+                        <option>Présent</option>
+                        <option>Absent</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Classe</th>
+                        <th>Étudiant</th>
+                        <th>Statut</th>
+                        <th>Enregistré par</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>19 février 2026</td>
+                        <td>Classe 3A</td>
+                        <td>Jean Dupont</td>
+                        <td><span class="badge-present">Présent</span></td>
+                        <td>Mme Martin</td>
+                    </tr>
+                    <tr>
+                        <td>19 février 2026</td>
+                        <td>Classe 3A</td>
+                        <td>Marie Martin</td>
+                        <td><span class="badge-present">Présent</span></td>
+                        <td>Mme Martin</td>
+                    </tr>
+                    <tr>
+                        <td>19 février 2026</td>
+                        <td>Classe 3A</td>
+                        <td>Pierre Leclerc</td>
+                        <td><span class="badge-absent">Absent</span></td>
+                        <td>Mme Martin</td>
+                    </tr>
+                    <tr>
+                        <td>18 février 2026</td>
+                        <td>Classe 3B</td>
+                        <td>Sophie Girard</td>
+                        <td><span class="badge-present">Présent</span></td>
+                        <td>M. Durand</td>
+                    </tr>
+                    <tr>
+                        <td>18 février 2026</td>
+                        <td>Classe 3B</td>
+                        <td>Luc Bernard</td>
+                        <td><span class="badge-present">Présent</span></td>
+                        <td>M. Durand</td>
+                    </tr>
+                    <tr>
+                        <td>18 février 2026</td>
+                        <td>Classe 4A</td>
+                        <td>Anne Perrin</td>
+                        <td><span class="badge-absent">Absent</span></td>
+                        <td>Mme Lefevre</td>
+                    </tr>
+                    <tr>
+                        <td>17 février 2026</td>
+                        <td>Classe 3A</td>
+                        <td>Jean Dupont</td>
+                        <td><span class="badge-present">Présent</span></td>
+                        <td>Mme Martin</td>
+                    </tr>
+                    <tr>
+                        <td>17 février 2026</td>
+                        <td>Classe 3A</td>
+                        <td>Marie Martin</td>
+                        <td><span class="badge-present">Présent</span></td>
+                        <td>Mme Martin</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Précédent</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Suivant</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function exportPDF() {
+            alert('Fonctionnalité d\'export PDF à intégrer');
+        }
+    </script>
+
+</body>
+</html>

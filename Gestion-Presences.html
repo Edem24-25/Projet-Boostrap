@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Présences - Cahier de Présences Numérique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #0d4a8c 0%, #16a34a 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .selection-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 15px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 0.2rem rgba(22, 163, 74, 0.15);
+        }
+
+        .student-list {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .student-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .student-item:hover {
+            background: #f9f9f9;
+        }
+
+        .student-name {
+            flex: 1;
+            font-weight: 600;
+            color: #0d3b66;
+            font-size: 1.05rem;
+        }
+
+        .status-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-status {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-present {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .btn-present.active, .btn-present:hover {
+            background: #155724;
+            color: white;
+        }
+
+        .btn-absent {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-absent.active, .btn-absent:hover {
+            background: #721c24;
+            color: white;
+        }
+
+        .actions-section {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-save {
+            flex: 1;
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(22, 163, 74, 0.3);
+        }
+
+        .btn-reset {
+            flex: 1;
+            background: #f0f4f8;
+            color: #0d4a8c;
+            border: 2px solid #0d4a8c;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-reset:hover {
+            background: #0d4a8c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-clipboard-check"></i> Cahier de Présence
+            </a>
+            <div class="ms-auto">
+                <a href="Profil.html" class="nav-link"><i class="fas fa-user"></i> Mon Profil</a>
+                <a href="index.html" class="nav-link"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" style="padding: 30px;">
+        <div class="page-header">
+            <h2><i class="fas fa-check-square"></i> Marquer les Présences</h2>
+            <p style="margin-top: 10px; margin-bottom: 0;">Sélectionnez une classe et marquez la présence des étudiants.</p>
+        </div>
+
+        <div class="selection-section">
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold mb-3">Sélectionnez une Classe</label>
+                    <select class="form-select" onchange="loadStudents()">
+                        <option>-- Choisir une classe --</option>
+                        <option>Classe 3A</option>
+                        <option>Classe 3B</option>
+                        <option>Classe 4A</option>
+                        <option>Classe 4B</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold mb-3">Date</label>
+                    <input type="date" class="form-control" id="dateInput">
+                </div>
+            </div>
+        </div>
+
+        <div class="student-list" id="studentList" style="display: none;">
+            <div class="student-item">
+                <div class="student-name">
+                    <i class="fas fa-user-circle" style="color: #16a34a;"></i> Jean Dupont
+                </div>
+                <div class="status-buttons">
+                    <button class="btn-status btn-present active" onclick="toggleStatus(this, 'présent')">
+                        <i class="fas fa-check"></i> Présent
+                    </button>
+                    <button class="btn-status btn-absent" onclick="toggleStatus(this, 'absent')">
+                        <i class="fas fa-times"></i> Absent
+                    </button>
+                </div>
+            </div>
+
+            <div class="student-item">
+                <div class="student-name">
+                    <i class="fas fa-user-circle" style="color: #16a34a;"></i> Marie Martin
+                </div>
+                <div class="status-buttons">
+                    <button class="btn-status btn-present active" onclick="toggleStatus(this, 'présent')">
+                        <i class="fas fa-check"></i> Présent
+                    </button>
+                    <button class="btn-status btn-absent" onclick="toggleStatus(this, 'absent')">
+                        <i class="fas fa-times"></i> Absent
+                    </button>
+                </div>
+            </div>
+
+            <div class="student-item">
+                <div class="student-name">
+                    <i class="fas fa-user-circle" style="color: #16a34a;"></i> Pierre Leclerc
+                </div>
+                <div class="status-buttons">
+                    <button class="btn-status btn-present" onclick="toggleStatus(this, 'présent')">
+                        <i class="fas fa-check"></i> Présent
+                    </button>
+                    <button class="btn-status btn-absent active" onclick="toggleStatus(this, 'absent')">
+                        <i class="fas fa-times"></i> Absent
+                    </button>
+                </div>
+            </div>
+
+            <div class="student-item">
+                <div class="student-name">
+                    <i class="fas fa-user-circle" style="color: #16a34a;"></i> Sophie Girard
+                </div>
+                <div class="status-buttons">
+                    <button class="btn-status btn-present active" onclick="toggleStatus(this, 'présent')">
+                        <i class="fas fa-check"></i> Présent
+                    </button>
+                    <button class="btn-status btn-absent" onclick="toggleStatus(this, 'absent')">
+                        <i class="fas fa-times"></i> Absent
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <button class="btn-reset" onclick="resetPresences()">
+                <i class="fas fa-redo"></i> Réinitialiser
+            </button>
+            <button class="btn-save" onclick="savePresences()">
+                <i class="fas fa-save"></i> Enregistrer les Présences
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function loadStudents() {
+            const select = event.target;
+            const studentList = document.getElementById('studentList');
+            if (select.value !== '-- Choisir une classe --') {
+                studentList.style.display = 'block';
+            } else {
+                studentList.style.display = 'none';
+            }
+        }
+
+        function toggleStatus(button, status) {
+            const siblings = button.parentElement.querySelectorAll('.btn-status');
+            siblings.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        }
+
+        function resetPresences() {
+            const buttons = document.querySelectorAll('.btn-status');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            buttons.forEach(btn => {
+                if (btn.classList.contains('btn-present')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function savePresences() {
+            alert('Présences enregistrées avec succès!');
+        }
+
+        // Set today's date by default
+        document.getElementById('dateInput').valueAsDate = new Date();
+    </script>
+
+</body>
+</html>
